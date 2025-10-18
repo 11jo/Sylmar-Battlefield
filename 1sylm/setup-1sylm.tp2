@@ -1,64 +1,98 @@
 BACKUP ~1Sylm\backup~
 AUTHOR ~zyraen@hotmail.com~
-// ALWAYS
-//  AT_INTERACTIVE_EXIT ~VIEW readme-btl.html~
-// END
-ASK_EVERY_COMPONENT
-LANGUAGE ~English~
-	      ~English~
-         ~1Sylm\setup.tra~
 
-BEGIN ~Sylmar - Elves vs Orcs~
-REQUIRE_FILE ~Data/25Dialog.bif~ ~You do not appear to have TOB installed.~ 
+README ~1Sylm/readme/readme-Sylm.%LANGUAGE%.txt~ ~1Sylm/readme/readme-Sylm.english.txt~
+
+ALWAYS
+	ACTION_DEFINE_ARRAY Ad_reload BEGIN
+	"setup.tra"
+	END
+	ACTION_DEFINE_ARRAY Ad_noconvert BEGIN END
+		LAF HANDLE_CHARSETS
+		INT_VAR
+		infer_charset = 1
+		STR_VAR
+		tra_path = EVAL ~%MOD_FOLDER%/tra~
+		noconvert_array = Ad_noconvert
+		reload_array = Ad_reload
+	END
+END
+
+ASK_EVERY_COMPONENT
+
+LANGUAGE ~English~ 	~english~ 
+					~1Sylm\tra\english\setup.tra~
+					~1Sylm\tra\english\setup-1Sylm.tra~
+					~1Sylm\tra\english\ZY1800.tra~
+
+LANGUAGE ~Francais~ ~french~ 
+					~1Sylm\tra\french\setup.tra~
+								
+
+BEGIN @5000 /* Sylmar - Elves vs Orcs */
+REQUIRE_FILE ~Data/25Dialog.bif~ @5001 /* You do not appear to have TOB installed. */ 
+
+APPEND ~stats.ids~ ~181 WIZARD_PROTECTION_FROM_NORMAL_WEAPONS~ UNLESS ~WIZARD_PROTECTION_FROM_NORMAL_WEAPONS~
 
 // generic map controls
 
 // for general Squad Movement Points
-COMPILE ~1Sylm\ZyELNAVG.BAF~
-COMPILE ~1Sylm\ZyORNAVG.BAF~
+COMPILE ~1Sylm\scripts\ZyELNAVG.BAF~
+COMPILE ~1Sylm\scripts\ZyORNAVG.BAF~
 
 // for general Squad Leaders
-COMPILE ~1Sylm\ZyELLEAD.BAF~
-COMPILE ~1Sylm\ZyORLEAD.BAF~
+COMPILE ~1Sylm\scripts\ZyELLEAD.BAF~
+COMPILE ~1Sylm\scripts\ZyORLEAD.BAF~
 
 // for general Squad Markers
-COMPILE ~1Sylm\ZyESPRAT.BAF~
-COMPILE ~1Sylm\ZyOSPRAT.BAF~
+COMPILE ~1Sylm\scripts\ZyESPRAT.BAF~
+COMPILE ~1Sylm\scripts\ZyOSPRAT.BAF~
 
 // generic scripts
-COMPILE ~1Sylm\ZyBALROG.BAF~
-COMPILE ~1Sylm\ZyEFRN0.BAF~
-COMPILE ~1Sylm\ZyEFSL0.BAF~
+COMPILE ~1Sylm\scripts\ZyBALROG.BAF~
+COMPILE ~1Sylm\scripts\ZyEFRN0.BAF~
+COMPILE ~1Sylm\scripts\ZyEFSL0.BAF~
 
 // general observers
-COMPILE ~1Sylm\ZyOBSERV.BAF~
-COPY ~1Sylm\ZyObserv.CRE~ ~override~
+COMPILE ~1Sylm\scripts\ZyOBSERV.BAF~
+COPY ~1Sylm\cre\ZyObserv.CRE~ ~override~
 
 // generic spells
-COPY ~1Sylm\NITM~ ~override~ 
-COPY ~1Sylm\NITM\ZySHLDN2.SPL~ ~override~
-SAY NAME1 ~Equip Shield~
-COPY ~1Sylm\SPL\ZyEMREGN.SPL~ ~override~
-SAY NAME1 ~Mass Regeneration~
-COPY ~1Sylm\SPL\ZyBRWHIP.SPL~ ~override~
-SAY NAME1 ~Flaming Whip~
-COPY ~1Sylm\SPL\ZyBRSHLD.SPL~ ~override~
-SAY NAME1 ~Flaming Shield~
-COPY ~1Sylm\SPL\ZyTRUSEE.SPL~ ~override~
-SAY NAME1 ~True Sight~
+COPY ~1Sylm\nitm~ ~override~ 
+COPY ~1Sylm\spl\ZySHLDN2.SPL~ ~override~
+SAY NAME1 @5002 /* Equip Shield */
+COPY ~1Sylm\spl\ZyEMREGN.SPL~ ~override~
+SAY NAME1 @5003 /* Mass Regeneration */
+COPY ~1Sylm\spl\ZyBRWHIP.SPL~ ~override~
+SAY NAME1 @5004 /* Flaming Whip */
+COPY ~1Sylm\spl\ZyBRSHLD.SPL~ ~override~
+SAY NAME1 @5005 /* Flaming Shield */
+COPY ~1Sylm\spl\ZyTRUSEE.SPL~ ~override~
+SAY NAME1 @5006 /* True Sight */
 
 // Map Zy1304                                                                                                                                                                        
 
-COMPILE ~1Sylm\Zy1304.BAF~
-COMPILE ~1Sylm\ZyEL1304.BAF~
-COMPILE ~1Sylm\ZyOR1304.BAF~
-COMPILE ~1Sylm\Zy1304ET.BAF~
-COMPILE ~1Sylm\Zy1304OT.BAF~
-COPY ~1Sylm\Zy1304.ARE~ ~override~
+COMPILE ~1Sylm\scripts\Zy1304.BAF~
+COMPILE ~1Sylm\scripts\ZyEL1304.BAF~
+COMPILE ~1Sylm\scripts\ZyOR1304.BAF~
+COMPILE ~1Sylm\scripts\Zy1304ET.BAF~
+COMPILE ~1Sylm\scripts\Zy1304OT.BAF~
+COPY ~1Sylm\are\Zy1304.ARE~ ~override~
 
 // Map Zy1800
 
-COPY ~1Sylm\ARE\Zy1800~ ~override~
+ ACTION_IF GAME_IS ~bg2ee eet~ THEN BEGIN
+ 
+COPY ~1Sylm\ARE\Zy1800EE~ ~override~
+
+END
+ 
+ ACTION_IF GAME_IS ~bg2 bgt~ THEN BEGIN
+ 
+COPY ~1Sylm\ARE\Zy1800\Zy1800.ARE~ ~override~
+REPLACE_TEXTUALLY ~AM1800~ ~ZY1800~
+COPY ~1Sylm\ARE\Zy1800\Zy1800HT.BMP~ ~override~
+COPY ~1Sylm\ARE\Zy1800\Zy1800SR.BMP~ ~override~
 
 COPY_EXISTING ~AR1800.TIS~ ~override\Zy1800.TIS~
 COPY_EXISTING ~AR1800.WED~ ~override\Zy1800.WED~
@@ -66,27 +100,39 @@ COPY_EXISTING ~AR1800.WED~ ~override\Zy1800.WED~
 COPY_EXISTING ~AR1800LM.BMP~ ~override\Zy1800LM.BMP~
 COPY_EXISTING ~AR1800.MOS~ ~override\ZY1800.MOS~
 
-COPY ~1Sylm\SPL\Zy18ELSS.CRE~ ~override~
-SAY NAME1 ~Dancing Sword~
-SAY NAME2 ~Dancing Sword~
-COPY ~1Sylm\Zy1800\Zy18MSGR.CRE~ ~override~
-SAY NAME1 ~Denaton~
-SAY NAME2 ~Denaton~
+END
 
-COMPILE ~1Sylm\Zy1800\Zy1800.BAF~
-COMPILE ~1Sylm\Zy1800\ZyEL1800.BAF~
-COMPILE ~1Sylm\Zy1800\ZyOR1800.BAF~
-COMPILE ~1Sylm\Zy1800\Zy1800ET.BAF~
-COMPILE ~1Sylm\Zy1800\Zy1800OT.BAF~
-COMPILE ~1Sylm\Zy1800\ZyE1800L.BAF~
-COMPILE ~1Sylm\Zy1800\ZyO1800L.BAF~
-COMPILE ~1Sylm\Zy1800\Zy1800.D~
-COMPILE ~1Sylm\Zy1800\Zy18EWRD.BAF~
-COMPILE ~1Sylm\Zy1800\Zy18ELSH.BAF~
-COMPILE ~1Sylm\Zy1800\Zy18BALR.BAF~
-COMPILE ~1Sylm\Zy1800\Zy18ELSS.BAF~
-EXTEND_TOP ~baldur.bcs~ ~1Sylm\Zy1800\Zy1800RN.BAF~ // penalty for deserting the elves
-EXTEND_TOP ~AR1002.bcs~ ~1Sylm\Zy1800\Zy18inse.BAF~ // penalty for deserting the elves
+COPY_EXISTING ~AM1800.WAV~ ~override\ZY1800.wav~
+COPY_EXISTING ~AM1800A1.WAV~ ~override\ZY1800A1.wav~
+COPY_EXISTING ~AM1800A2.WAV~ ~override\ZY1800A2.wav~
+COPY_EXISTING ~AM1800D1.WAV~ ~override\ZY1800D1.wav~
+COPY_EXISTING ~AM1800D2.WAV~ ~override\ZY1800D2.wav~
+COPY_EXISTING ~AM1800D3.WAV~ ~override\ZY1800D3.wav~
+COPY_EXISTING ~AM1800D4.WAV~ ~override\ZY1800D4.wav~
+COPY_EXISTING ~AM1800D5.WAV~ ~override\ZY1800D5.wav~
+COPY_EXISTING ~AM1800N.WAV~ ~override\ZY1800N.wav~
+
+COPY ~1Sylm\cre\Zy18ELSS.CRE~ ~override~
+SAY NAME1 @5007 /* Dancing Sword */
+SAY NAME2 @5007 /* Dancing Sword */
+COPY ~1Sylm\cre\Zy18MSGR.CRE~ ~override~
+SAY NAME1 @5008 /* Denaton */
+SAY NAME2 @5008 /* Denaton */
+
+COMPILE ~1Sylm\scripts\Zy1800\Zy1800.BAF~
+COMPILE ~1Sylm\scripts\Zy1800\ZyEL1800.BAF~
+COMPILE ~1Sylm\scripts\Zy1800\ZyOR1800.BAF~
+COMPILE ~1Sylm\scripts\Zy1800\Zy1800ET.BAF~
+COMPILE ~1Sylm\scripts\Zy1800\Zy1800OT.BAF~
+COMPILE ~1Sylm\scripts\Zy1800\ZyE1800L.BAF~
+COMPILE ~1Sylm\scripts\Zy1800\ZyO1800L.BAF~
+COMPILE ~1Sylm\dialog\Zy1800.D~
+COMPILE ~1Sylm\scripts\Zy1800\Zy18EWRD.BAF~
+COMPILE ~1Sylm\scripts\Zy1800\Zy18ELSH.BAF~
+COMPILE ~1Sylm\scripts\Zy1800\Zy18BALR.BAF~
+COMPILE ~1Sylm\scripts\Zy1800\Zy18ELSS.BAF~
+EXTEND_TOP ~baldur.bcs~ ~1Sylm\scripts\Zy1800\Zy1800RN.BAF~ // penalty for deserting the elves
+EXTEND_TOP ~AR1002.bcs~ ~1Sylm\scripts\Zy1800\Zy18inse.BAF~ // penalty for deserting the elves
 
 
 // SQUAD CODE
@@ -94,13 +140,13 @@ EXTEND_TOP ~AR1002.bcs~ ~1Sylm\Zy1800\Zy18inse.BAF~ // penalty for deserting the
 // generating Squad Markers and Waypoints
 // adjustable number of Squads
 
-COPY ~1Sylm\ZyxxSPWN.baf~ ~override~ // spawning controllers
+COPY ~1Sylm\scripts\ZyxxSPWN.baf~ ~override~ // spawning controllers
 
 COPY ~1Sylm\t.txt~ ~override\ZyxxSLSP.baf~
 COPY ~1Sylm\t.txt~ ~override\ZyxxSMSP.baf~
 COPY ~1Sylm\t.txt~ ~override\ZyxxSPWP.baf~
-COPY ~1Sylm\ZyELInit.BAF~ ~override\ZyELInit.BAF~            
-COPY ~1Sylm\ZyORInit.BAF~ ~override\ZyORInit.BAF~            
+COPY ~1Sylm\scripts\ZyELInit.BAF~ ~override\ZyELInit.BAF~            
+COPY ~1Sylm\scripts\ZyORInit.BAF~ ~override\ZyORInit.BAF~            
 
 COPY ~1Sylm\T.txt~ ~def.txt~
   PATCH_IF (SOURCE_SIZE > 0x01) THEN BEGIN
@@ -109,39 +155,39 @@ COPY ~1Sylm\T.txt~ ~def.txt~
         READ_ASCII (i*1) "al" ( 1 )
       END
       INNER_ACTION BEGIN
-        COPY ~1Sylm\ZyINVIS.cre~ ~override\ZyELSQM%al%.CRE~
-          SAY NAME1 ~ZyELSQM ~
-          SAY NAME2 ~ZyELSQM ~
-          WRITE_ASCII 0x280 ~ZyELSQM ~
+        COPY ~1Sylm\cre\ZyINVIS.cre~ ~override\ZyELSQM%al%.CRE~
+          SAY NAME1 @5009 /* ZyELSQM  */
+          SAY NAME2 @5009 /* ZyELSQM  */
+          WRITE_ASCII 0x280 ~ZyELSQM~
           WRITE_EVALUATED_ASCII 0x287 "%al%"
           WRITE_ASCII 0x258 ~ZyESPRAT~
           WRITE_ASCII 0x260 ~ZyELLDSP~
           WRITE_ASCII 0x268 ~ZyELNAVG~
           WRITE_BYTE 0x270 29
           WRITE_BYTE 0x270 128
-        COPY ~1Sylm\ZyINVIS.cre~ ~override\ZyELSQC%al%.CRE~
-          SAY NAME1 ~ZyELSQC ~
-          SAY NAME2 ~ZyELSQC ~
-          WRITE_ASCII 0x280 ~ZyELSQC ~
+        COPY ~1Sylm\cre\ZyINVIS.cre~ ~override\ZyELSQC%al%.CRE~
+          SAY NAME1 @5010 /* ZyELSQC  */
+          SAY NAME2 @5010 /* ZyELSQC  */
+          WRITE_ASCII 0x280 ~ZyELSQC~
           WRITE_EVALUATED_ASCII 0x287 "%al%"
-          WRITE_ASCII 0x260 ~ZyELSQC ~
+          WRITE_ASCII 0x260 ~ZyELSQC~
           WRITE_EVALUATED_ASCII 0x267 "%al%"
-        COPY ~1Sylm\ZyINVIS.cre~ ~override\ZyORSQM%al%.CRE~
-          SAY NAME1 ~ZyORSQM ~
-          SAY NAME2 ~ZyORSQM ~
-          WRITE_ASCII 0x280 ~ZyORSQM ~
+        COPY ~1Sylm\cre\ZyINVIS.cre~ ~override\ZyORSQM%al%.CRE~
+          SAY NAME1 @5011 /* ZyORSQM  */
+          SAY NAME2 @5011 /* ZyORSQM  */
+          WRITE_ASCII 0x280 ~ZyORSQM~
           WRITE_EVALUATED_ASCII 0x287 "%al%"
           WRITE_ASCII 0x258 ~ZyOSPRAT~
           WRITE_ASCII 0x260 ~ZyORLDSP~
           WRITE_ASCII 0x268 ~ZyORNAVG~
           WRITE_BYTE 0x270 202
           WRITE_BYTE 0x270 128
-        COPY ~1Sylm\ZyINVIS.cre~ ~override\ZyORSQC%al%.CRE~
-          SAY NAME1 ~ZyORSQC ~
-          SAY NAME2 ~ZyORSQC ~
-          WRITE_ASCII 0x280 ~ZyORSQC ~
+        COPY ~1Sylm\cre\ZyINVIS.cre~ ~override\ZyORSQC%al%.CRE~
+          SAY NAME1 @5012 /* ZyORSQC  */
+          SAY NAME2 @5012 /* ZyORSQC  */
+          WRITE_ASCII 0x280 ~ZyORSQC~
           WRITE_EVALUATED_ASCII 0x287 "%al%"
-          WRITE_ASCII 0x260 ~ZyORSQC ~
+          WRITE_ASCII 0x260 ~ZyORSQC~
           WRITE_EVALUATED_ASCII 0x267 "%al%"
 
 // spawn controller checks which squads are not fielded and assigns them in        
@@ -328,7 +374,7 @@ BUT_ONLY_IF_IT_CHANGES
 // compiling the above scripts
 
 COMPILE ~override\ZyELInit.BAF~
-COMPILE ~1Sylm\ZyORInit.BAF~
+COMPILE ~1Sylm\scripts\ZyORInit.BAF~
 
 COPY ~override\ZyxxSPWN.BAF~ ~1Sylm\tempbaf\ZyELSPWN.BAF~
   REPLACE_TEXTUALLY Zyxx ZyEL
@@ -862,9 +908,9 @@ COPY ~1Sylm\T.txt~ ~def.baf~
         READ_ASCII (i*1) "al" ( 1 )
       END
       INNER_ACTION BEGIN
-        COPY ~1Sylm\ZyINVIS.cre~ ~override\Zy1304W%al%.CRE~
-          SAY NAME1 ~Zy1304WP~
-          SAY NAME2 ~Zy1304WP~
+        COPY ~1Sylm\cre\ZyINVIS.cre~ ~override\Zy1304W%al%.CRE~
+          SAY NAME1 @5013 /* Zy1304WP */
+          SAY NAME2 @5013 /* Zy1304WP */
           WRITE_ASCII 0x280 ~Zy1304W ~
           WRITE_EVALUATED_ASCII 0x287 "%al%"
         
@@ -882,9 +928,9 @@ APPEND ~Zy1304T%al%.baf~
         COPY ~override\Zy1304T%al%.baf~ ~override\Zy1304T%al%.bcs~            
           COMPILE_BAF_TO_BCS
 
-        COPY ~1Sylm\ZyINVIS.cre~ ~override\Zy1800W%al%.CRE~
-          SAY NAME1 ~Zy1800WP~
-          SAY NAME2 ~Zy1800WP~
+        COPY ~1Sylm\cre\ZyINVIS.cre~ ~override\Zy1800W%al%.CRE~
+          SAY NAME1 @5014 /* Zy1800WP */
+          SAY NAME2 @5014 /* Zy1800WP */
           WRITE_ASCII 0x280 ~Zy1800W ~
           WRITE_EVALUATED_ASCII 0x287 "%al%"
         
@@ -1947,9 +1993,9 @@ COPY ~1Sylm\T.txt~ ~def.txt~
       SET xp6 = xp1 * 2
 
       INNER_ACTION BEGIN
-        COPY ~1Sylm\ZyELSMAx.cre~ ~override\ZyELSMA%al%.CRE~
-        SAY NAME1 ~Elven Warrior~
-        SAY NAME2 ~Elven Warrior~
+        COPY ~1Sylm\cre\ZyELSMAx.cre~ ~override\ZyELSMA%al%.CRE~
+        SAY NAME1 @5015 /* Elven Warrior */
+        SAY NAME2 @5015 /* Elven Warrior */
         WRITE_ASCII 0x258 ~ZyELSMSP~
         WRITE_BYTE 0x234 %lvl%
         WRITE_LONG 0x14 %xp%
@@ -1968,9 +2014,9 @@ COPY ~1Sylm\T.txt~ ~def.txt~
         WRITE_BYTE 0x23c %b_stat%   // dex
         WRITE_BYTE 0x23d %b_stat%   // con
         WRITE_BYTE 0x23d %c_stat%   // chr
-        COPY ~1Sylm\ZyELSMAx.cre~ ~override\ZyELS1A%al%.CRE~
-        SAY NAME1 ~Elven Sergeant~
-        SAY NAME2 ~Elven Sergeant~
+        COPY ~1Sylm\cre\ZyELSMAx.cre~ ~override\ZyELS1A%al%.CRE~
+        SAY NAME1 @5016 /* Elven Sergeant */
+        SAY NAME2 @5016 /* Elven Sergeant */
 	ADD_CRE_ITEM ~ZyHelmE5~ #0 #0 #0 ~NONE~ ~HELMET~ 
 	ADD_CRE_ITEM ~ZYINVULN~ #0 #0 #0 ~NONE~ ~RRING~ 
         WRITE_ASCII 0x248 ~ZyELLEAD~
@@ -1986,27 +2032,27 @@ COPY ~1Sylm\T.txt~ ~def.txt~
         WRITE_BYTE 0x58 %savel%
         WRITE_BYTE 0x239 %strbonl%
          COPY ~override\ZyELS1A%al%.cre~ ~override\ZyELS2A%al%.CRE~
-        SAY NAME1 ~Elven Lieutenant~
-        SAY NAME2 ~Elven Lieutenant~
+        SAY NAME1 @5017 /* Elven Lieutenant */
+        SAY NAME2 @5017 /* Elven Lieutenant */
         WRITE_LONG 0x14 %xp2%
         WRITE_SHORT 0x24 %hp2%
         WRITE_SHORT 0x26 %hp2%
         COPY ~override\ZyELS1A%al%.cre~ ~override\ZyELS3A%al%.CRE~
-        SAY NAME1 ~Elven Captain~
-        SAY NAME2 ~Elven Captain~
+        SAY NAME1 @5018 /* Elven Captain */
+        SAY NAME2 @5018 /* Elven Captain */
         WRITE_LONG 0x14 %xp3%
         WRITE_SHORT 0x24 %hp3%
         WRITE_SHORT 0x26 %hp3%
         COPY ~override\ZyELS1A%al%.cre~ ~override\ZyELS4A%al%.CRE~
-        SAY NAME1 ~Elven General~
-        SAY NAME2 ~Elven General~
+        SAY NAME1 @5019 /* Elven General */
+        SAY NAME2 @5019 /* Elven General */
         WRITE_LONG 0x14 %xp4%
         WRITE_SHORT 0x24 %hp4%
         WRITE_SHORT 0x26 %hp4%
 
-        COPY ~1Sylm\ZyORSMAx.cre~ ~override\ZyORSMA%al%.CRE~
-        SAY NAME1 ~Orcish Warrior~
-        SAY NAME2 ~Orcish Warrior~
+        COPY ~1Sylm\cre\ZyORSMAx.cre~ ~override\ZyORSMA%al%.CRE~
+        SAY NAME1 @5020 /* Orcish Warrior */
+        SAY NAME2 @5020 /* Orcish Warrior */
         WRITE_ASCII 0x258 ~ZyORSMSP~
         WRITE_BYTE 0x234 %lvl%
         WRITE_LONG 0x14 %xp%
@@ -2026,9 +2072,9 @@ COPY ~1Sylm\T.txt~ ~def.txt~
         WRITE_BYTE 0x23d %b_stat%   // con
         WRITE_BYTE 0x23d %c_stat%   // chr
         
-        COPY ~1Sylm\ZyORSMAx.cre~ ~override\ZyORS1A%al%.CRE~
-        SAY NAME1 ~Orc Raider~
-        SAY NAME2 ~Orc Raider~
+        COPY ~1Sylm\cre\ZyORSMAx.cre~ ~override\ZyORS1A%al%.CRE~
+        SAY NAME1 @5021 /* Orc Raider */
+        SAY NAME2 @5021 /* Orc Raider */
 	ADD_CRE_ITEM ~ZyHelmO5~ #0 #0 #0 ~NONE~ ~HELMET~ 
 	ADD_CRE_ITEM ~ZYINVULN~ #0 #0 #0 ~NONE~ ~RRING~ 
         WRITE_ASCII 0x248 ~ZyORLEAD~
@@ -2044,27 +2090,27 @@ COPY ~1Sylm\T.txt~ ~def.txt~
         WRITE_BYTE 0x58 %savel%
         WRITE_BYTE 0x239 %strbonl%
         COPY ~override\ZyORS1A%al%.cre~ ~override\ZyORS2A%al%.CRE~
-        SAY NAME1 ~Orc Chieftain~
-        SAY NAME2 ~Orc Chieftain~
+        SAY NAME1 @5022 /* Orc Chieftain */
+        SAY NAME2 @5022 /* Orc Chieftain */
         WRITE_LONG 0x14 %xp2%
         WRITE_SHORT 0x24 %hp2%
         WRITE_SHORT 0x26 %hp2%
         COPY ~override\ZyORS1A%al%.cre~ ~override\ZyORS3A%al%.CRE~
-        SAY NAME1 ~Orc Champion~
-        SAY NAME2 ~Orc Champion~
+        SAY NAME1 @5023 /* Orc Champion */
+        SAY NAME2 @5023 /* Orc Champion */
         WRITE_LONG 0x14 %xp3%
         WRITE_SHORT 0x24 %hp3%
         WRITE_SHORT 0x26 %hp3%
         COPY ~override\ZyORS1A%al%.cre~ ~override\ZyORS4A%al%.CRE~
-        SAY NAME1 ~Orc Warlord~
-        SAY NAME2 ~Orc Warlord~
+        SAY NAME1 @5024 /* Orc Warlord */
+        SAY NAME2 @5024 /* Orc Warlord */
         WRITE_LONG 0x14 %xp4%
         WRITE_SHORT 0x24 %hp4%
         WRITE_SHORT 0x26 %hp4%
 
         COPY ~override\ZyORS1A%al%.cre~ ~override\Zy18BAL%al%.CRE~
-        SAY NAME1 ~Balrog~
-        SAY NAME2 ~Balrog~
+        SAY NAME1 @5025 /* Balrog */
+        SAY NAME2 @5025 /* Balrog */
         WRITE_ASCII 0x248 ~Zy18BALR~
         WRITE_ASCII 0x258 ~ZyBALROG~
 	ADD_CRE_ITEM ~ZY18BALA~ #0 #0 #0 ~NONE~ ~ARMOR~ 
@@ -2093,8 +2139,8 @@ COPY ~1Sylm\T.txt~ ~def.txt~
         WRITE_BYTE 0x5f 30
 
         COPY ~override\ZyELS1A%al%.cre~ ~override\Zy18ESH%al%.CRE~
-        SAY NAME1 ~Elven King Shade~
-        SAY NAME2 ~Elven King Shade~
+        SAY NAME1 @5026 /* Elven King Shade */
+        SAY NAME2 @5026 /* Elven King Shade */
         WRITE_ASCII 0x248 ~Zy18ELSH~
         WRITE_ASCII 0x258 ~        ~
 	ADD_CRE_ITEM ~ZY18ELSA~ #0 #0 #0 ~NONE~ ~HELMET~ 
@@ -2157,9 +2203,9 @@ COPY ~1Sylm\T.txt~ ~def.txt~
       SET xp6 = xp1 * 2
 
       INNER_ACTION BEGIN
-        COPY ~1Sylm\ZyELSMAx.cre~ ~override\ZyELSMA%al%.CRE~
-        SAY NAME1 ~Elven Warrior~
-        SAY NAME2 ~Elven Warrior~
+        COPY ~1Sylm\cre\ZyELSMAx.cre~ ~override\ZyELSMA%al%.CRE~
+        SAY NAME1 @5015 /* Elven Warrior */
+        SAY NAME2 @5015 /* Elven Warrior */
         WRITE_ASCII 0x258 ~ZyELSMSP~
         WRITE_BYTE 0x234 %lvl%
         WRITE_LONG 0x14 %xp%
@@ -2179,8 +2225,8 @@ COPY ~1Sylm\T.txt~ ~def.txt~
         WRITE_BYTE 0x23d %b_stat%   // con
         WRITE_BYTE 0x23d %c_stat%   // chr
         COPY ~override\ZyELSMA%al%.cre~ ~override\ZyELS1A%al%.CRE~
-        SAY NAME1 ~Elven Sergeant~
-        SAY NAME2 ~Elven Sergeant~
+        SAY NAME1 @5016 /* Elven Sergeant */
+        SAY NAME2 @5016 /* Elven Sergeant */
 	ADD_CRE_ITEM ~ZyHelmE5~ #0 #0 #0 ~NONE~ ~HELMET~ 
 	ADD_CRE_ITEM ~ZYINVULN~ #0 #0 #0 ~NONE~ ~RRING~ 
         WRITE_ASCII 0x248 ~ZyELLEAD~
@@ -2196,27 +2242,27 @@ COPY ~1Sylm\T.txt~ ~def.txt~
         WRITE_BYTE 0x58 %savel%
         WRITE_BYTE 0x239 %strbonl%
          COPY ~override\ZyELS1A%al%.cre~ ~override\ZyELS2A%al%.CRE~
-        SAY NAME1 ~Elven Lieutenant~
-        SAY NAME2 ~Elven Lieutenant~
+        SAY NAME1 @5017 /* Elven Lieutenant */
+        SAY NAME2 @5017 /* Elven Lieutenant */
         WRITE_LONG 0x14 %xp2%
         WRITE_SHORT 0x24 %hp2%
         WRITE_SHORT 0x26 %hp2%
         COPY ~override\ZyELS1A%al%.cre~ ~override\ZyELS3A%al%.CRE~
-        SAY NAME1 ~Elven Captain~
-        SAY NAME2 ~Elven Captain~
+        SAY NAME1 @5018 /* Elven Captain */
+        SAY NAME2 @5018 /* Elven Captain */
         WRITE_LONG 0x14 %xp3%
         WRITE_SHORT 0x24 %hp3%
         WRITE_SHORT 0x26 %hp3%
         COPY ~override\ZyELS1A%al%.cre~ ~override\ZyELS4A%al%.CRE~
-        SAY NAME1 ~Elven General~
-        SAY NAME2 ~Elven General~
+        SAY NAME1 @5019 /* Elven General */
+        SAY NAME2 @5019 /* Elven General */
         WRITE_LONG 0x14 %xp4%
         WRITE_SHORT 0x24 %hp4%
         WRITE_SHORT 0x26 %hp4%
 
-        COPY ~1Sylm\ZyORSMAx.cre~ ~override\ZyORSMA%al%.CRE~
-        SAY NAME1 ~Orcish Warrior~
-        SAY NAME2 ~Orcish Warrior~
+        COPY ~1Sylm\cre\ZyORSMAx.cre~ ~override\ZyORSMA%al%.CRE~
+        SAY NAME1 @5020 /* Orcish Warrior */
+        SAY NAME2 @5020 /* Orcish Warrior */
         WRITE_ASCII 0x258 ~ZyORSMSP~
         WRITE_BYTE 0x234 %lvl%
         WRITE_LONG 0x14 %xp%
@@ -2237,8 +2283,8 @@ COPY ~1Sylm\T.txt~ ~def.txt~
         WRITE_BYTE 0x23d %c_stat%   // chr
         
         COPY ~override\ZyORSMA%al%.cre~ ~override\ZyORS1A%al%.CRE~
-        SAY NAME1 ~Orc Raider~
-        SAY NAME2 ~Orc Raider~
+        SAY NAME1 @5021 /* Orc Raider */
+        SAY NAME2 @5021 /* Orc Raider */
 	ADD_CRE_ITEM ~ZyHelmO5~ #0 #0 #0 ~NONE~ ~HELMET~ 
 	ADD_CRE_ITEM ~ZYINVULN~ #0 #0 #0 ~NONE~ ~RRING~ 
         WRITE_ASCII 0x248 ~ZyORLEAD~
@@ -2254,27 +2300,27 @@ COPY ~1Sylm\T.txt~ ~def.txt~
         WRITE_BYTE 0x58 %savel%
         WRITE_BYTE 0x239 %strbonl%
         COPY ~override\ZyORS1A%al%.cre~ ~override\ZyORS2A%al%.CRE~
-        SAY NAME1 ~Orc Chieftain~
-        SAY NAME2 ~Orc Chieftain~
+        SAY NAME1 @5022 /* Orc Chieftain */
+        SAY NAME2 @5022 /* Orc Chieftain */
         WRITE_LONG 0x14 %xp2%
         WRITE_SHORT 0x24 %hp2%
         WRITE_SHORT 0x26 %hp2%
         COPY ~override\ZyORS1A%al%.cre~ ~override\ZyORS3A%al%.CRE~
-        SAY NAME1 ~Orc Champion~
-        SAY NAME2 ~Orc Champion~
+        SAY NAME1 @5023 /* Orc Champion */
+        SAY NAME2 @5023 /* Orc Champion */
         WRITE_LONG 0x14 %xp3%
         WRITE_SHORT 0x24 %hp3%
         WRITE_SHORT 0x26 %hp3%
         COPY ~override\ZyORS1A%al%.cre~ ~override\ZyORS4A%al%.CRE~
-        SAY NAME1 ~Orc Warlord~
-        SAY NAME2 ~Orc Warlord~
+        SAY NAME1 @5024 /* Orc Warlord */
+        SAY NAME2 @5024 /* Orc Warlord */
         WRITE_LONG 0x14 %xp4%
         WRITE_SHORT 0x24 %hp4%
         WRITE_SHORT 0x26 %hp4%
 
         COPY ~override\ZyORS1A%al%.cre~ ~override\Zy18BAL%al%.CRE~
-        SAY NAME1 ~Balrog~
-        SAY NAME2 ~Balrog~
+        SAY NAME1 @5025 /* Balrog */
+        SAY NAME2 @5025 /* Balrog */
         WRITE_ASCII 0x248 ~Zy18BALR~
         WRITE_ASCII 0x258 ~ZyBALROG~
 	ADD_CRE_ITEM ~ZY18BALA~ #0 #0 #0 ~NONE~ ~ARMOR~ 
@@ -2303,8 +2349,8 @@ COPY ~1Sylm\T.txt~ ~def.txt~
         WRITE_BYTE 0x5f 30
 
         COPY ~override\ZyELS1A%al%.cre~ ~override\Zy18ESH%al%.CRE~
-        SAY NAME1 ~Elven King Shade~
-        SAY NAME2 ~Elven King Shade~
+        SAY NAME1 @5026 /* Elven King Shade */
+        SAY NAME2 @5026 /* Elven King Shade */
         WRITE_ASCII 0x248 ~Zy18ELSH~
         WRITE_ASCII 0x258 ~        ~
 	ADD_CRE_ITEM ~ZY18ELSA~ #0 #0 #0 ~NONE~ ~HELMET~ 
@@ -2367,9 +2413,9 @@ COPY ~1Sylm\T.txt~ ~def.txt~
       SET xp6 = xp1 * 2
 
       INNER_ACTION BEGIN
-        COPY ~1Sylm\ZyELSMAx.cre~ ~override\ZyELSMA%al%.CRE~
-        SAY NAME1 ~Elven Warrior~
-        SAY NAME2 ~Elven Warrior~
+        COPY ~1Sylm\cre\ZyELSMAx.cre~ ~override\ZyELSMA%al%.CRE~
+        SAY NAME1 @5015 /* Elven Warrior */
+        SAY NAME2 @5015 /* Elven Warrior */
         WRITE_ASCII 0x258 ~ZyELSMSP~
         WRITE_BYTE 0x234 %lvl%
         WRITE_LONG 0x14 %xp%
@@ -2390,8 +2436,8 @@ COPY ~1Sylm\T.txt~ ~def.txt~
         WRITE_BYTE 0x23d %b_stat%   // con
         WRITE_BYTE 0x23d %c_stat%   // chr
         COPY ~override\ZyELSMA%al%.cre~ ~override\ZyELS1A%al%.CRE~
-        SAY NAME1 ~Elven Sergeant~
-        SAY NAME2 ~Elven Sergeant~
+        SAY NAME1 @5016 /* Elven Sergeant */
+        SAY NAME2 @5016 /* Elven Sergeant */
 	ADD_CRE_ITEM ~ZyHelmE5~ #0 #0 #0 ~NONE~ ~HELMET~ 
 	ADD_CRE_ITEM ~ZYINVULN~ #0 #0 #0 ~NONE~ ~RRING~ 
         WRITE_ASCII 0x248 ~ZyELLEAD~
@@ -2407,27 +2453,27 @@ COPY ~1Sylm\T.txt~ ~def.txt~
         WRITE_BYTE 0x58 %savel%
         WRITE_BYTE 0x239 %strbonl%
          COPY ~override\ZyELS1A%al%.cre~ ~override\ZyELS2A%al%.CRE~
-        SAY NAME1 ~Elven Lieutenant~
-        SAY NAME2 ~Elven Lieutenant~
+        SAY NAME1 @5017 /* Elven Lieutenant */
+        SAY NAME2 @5017 /* Elven Lieutenant */
         WRITE_LONG 0x14 %xp2%
         WRITE_SHORT 0x24 %hp2%
         WRITE_SHORT 0x26 %hp2%
         COPY ~override\ZyELS1A%al%.cre~ ~override\ZyELS3A%al%.CRE~
-        SAY NAME1 ~Elven Captain~
-        SAY NAME2 ~Elven Captain~
+        SAY NAME1 @5018 /* Elven Captain */
+        SAY NAME2 @5018 /* Elven Captain */
         WRITE_LONG 0x14 %xp3%
         WRITE_SHORT 0x24 %hp3%
         WRITE_SHORT 0x26 %hp3%
         COPY ~override\ZyELS1A%al%.cre~ ~override\ZyELS4A%al%.CRE~
-        SAY NAME1 ~Elven General~
-        SAY NAME2 ~Elven General~
+        SAY NAME1 @5019 /* Elven General */
+        SAY NAME2 @5019 /* Elven General */
         WRITE_LONG 0x14 %xp4%
         WRITE_SHORT 0x24 %hp4%
         WRITE_SHORT 0x26 %hp4%
 
-        COPY ~1Sylm\ZyORSMAx.cre~ ~override\ZyORSMA%al%.CRE~
-        SAY NAME1 ~Orcish Warrior~
-        SAY NAME2 ~Orcish Warrior~
+        COPY ~1Sylm\cre\ZyORSMAx.cre~ ~override\ZyORSMA%al%.CRE~
+        SAY NAME1 @5020 /* Orcish Warrior */
+        SAY NAME2 @5020 /* Orcish Warrior */
         WRITE_ASCII 0x258 ~ZyORSMSP~
         WRITE_BYTE 0x234 %lvl%
         WRITE_LONG 0x14 %xp%
@@ -2449,8 +2495,8 @@ COPY ~1Sylm\T.txt~ ~def.txt~
         WRITE_BYTE 0x23d %c_stat%   // chr
         
         COPY ~override\ZyORSMA%al%.cre~ ~override\ZyORS1A%al%.CRE~
-        SAY NAME1 ~Orc Raider~
-        SAY NAME2 ~Orc Raider~
+        SAY NAME1 @5021 /* Orc Raider */
+        SAY NAME2 @5021 /* Orc Raider */
 	ADD_CRE_ITEM ~ZyHelmO5~ #0 #0 #0 ~NONE~ ~HELMET~ 
 	ADD_CRE_ITEM ~ZYINVULN~ #0 #0 #0 ~NONE~ ~RRING~ 
         WRITE_ASCII 0x248 ~ZyORLEAD~
@@ -2466,27 +2512,27 @@ COPY ~1Sylm\T.txt~ ~def.txt~
         WRITE_BYTE 0x58 %savel%
         WRITE_BYTE 0x239 %strbonl%
         COPY ~override\ZyORS1A%al%.cre~ ~override\ZyORS2A%al%.CRE~
-        SAY NAME1 ~Orc Chieftain~
-        SAY NAME2 ~Orc Chieftain~
+        SAY NAME1 @5022 /* Orc Chieftain */
+        SAY NAME2 @5022 /* Orc Chieftain */
         WRITE_LONG 0x14 %xp2%
         WRITE_SHORT 0x24 %hp2%
         WRITE_SHORT 0x26 %hp2%
         COPY ~override\ZyORS1A%al%.cre~ ~override\ZyORS3A%al%.CRE~
-        SAY NAME1 ~Orc Champion~
-        SAY NAME2 ~Orc Champion~
+        SAY NAME1 @5023 /* Orc Champion */
+        SAY NAME2 @5023 /* Orc Champion */
         WRITE_LONG 0x14 %xp3%
         WRITE_SHORT 0x24 %hp3%
         WRITE_SHORT 0x26 %hp3%
         COPY ~override\ZyORS1A%al%.cre~ ~override\ZyORS4A%al%.CRE~
-        SAY NAME1 ~Orc Warlord~
-        SAY NAME2 ~Orc Warlord~
+        SAY NAME1 @5024 /* Orc Warlord */
+        SAY NAME2 @5024 /* Orc Warlord */
         WRITE_LONG 0x14 %xp4%
         WRITE_SHORT 0x24 %hp4%
         WRITE_SHORT 0x26 %hp4%
 
         COPY ~override\ZyORS1A%al%.cre~ ~override\Zy18BAL%al%.CRE~
-        SAY NAME1 ~Balrog~
-        SAY NAME2 ~Balrog~
+        SAY NAME1 @5025 /* Balrog */
+        SAY NAME2 @5025 /* Balrog */
         WRITE_ASCII 0x248 ~Zy18BALR~
         WRITE_ASCII 0x258 ~ZyBALROG~
 	ADD_CRE_ITEM ~ZY18BALA~ #0 #0 #0 ~NONE~ ~ARMOR~ 
@@ -2515,8 +2561,8 @@ COPY ~1Sylm\T.txt~ ~def.txt~
         WRITE_BYTE 0x5f 30
 
         COPY ~override\ZyELS1A%al%.cre~ ~override\Zy18ESH%al%.CRE~
-        SAY NAME1 ~Elven King Shade~
-        SAY NAME2 ~Elven King Shade~
+        SAY NAME1 @5026 /* Elven King Shade */
+        SAY NAME2 @5026 /* Elven King Shade */
         WRITE_ASCII 0x248 ~Zy18ELSH~
         WRITE_ASCII 0x258 ~        ~
 	ADD_CRE_ITEM ~ZY18ELSA~ #0 #0 #0 ~NONE~ ~HELMET~ 
